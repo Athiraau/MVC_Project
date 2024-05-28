@@ -38,6 +38,7 @@ namespace MVC_Project.Controllers
 
             //test;
             //mebs
+            //asdf
             //HttpContext.Session.SetString("EmpName", null);
             //HttpContext.Session.SetString("ecode", null);
             //HttpContext.Session.SetString("BrName", null);
