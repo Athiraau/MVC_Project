@@ -3,6 +3,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -119,52 +120,42 @@
 
     <script>
 
-        window.onload = function OnloadFunction() {
+        window.onload = function OnloadFunction()
+        { fetchData();    }
 
-            // let a =
-            fetchData();
-            //alert("alert");
+        function callAPIResponse(indata) {
+                      
+            var response = '';
+          indata = "IND_DEVICE_UPDATION_LOAD" + "~" + indata;
+          
+            $.ajax({
+                type: "GET",
+                url: "/Others/DEVICEUPDATION",
+                data: { datas: indata },
+                async: false,
+                success: function (response) {
+                    //var respon = response;
+                }
+            });
 
+            const dataz = '@ViewData["ApiResponse"]';
+            return dataz;
         }
 
-
-
         function fetchData() {
-            debugger;
+
+          
             //  var user = '348761';//'14672';
-            var user = '@ViewData["user"]';
+            var user = '@ViewData["EmpCode"]';
             // var brid = '@ViewData["BrID"]';
             var baselink = '@ViewData["baseurl"]';
-            const apiUrl = baselink + 'smareportsapi/api/SMAModule/GetSMAData/IND_DEVICE_UPDATION_LOAD/';
-            // const apiUrl = 'https://uatapp.manappuram.net/smareportsapi/api/SMAModule/GetSMAData/INSTRUMENT_ONLOAD/';// 2~18906~0~43152/1';
-            //const apiUrl = 'https://uatapp.manappuram.net/smareportsapi/api/SMAModule/GetSMAData/IND_DEVICE_UPDATION_LOAD/';
-            const url = `${apiUrl}${user}/1`
+           const indata = user;
+            const data = callAPIResponse(indata);
+           debugger;
 
-            fetch(url)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    //  ;
-                    return response.json();
-                })
-                .then(data => {
-
-                    const data1 = JSON.stringify(data);
-                    console.log(data1);
-                    var data2 = JSON.parse(data1);
-
-                    populateTable(data2);
-
-                    console.log(data2);
-
-
-
-                })
-
-                .catch(error => {
-                    console.error('There was a problem with the fetch operation:', error);
-                });
+            const data2 = JSON.parse(data.replace(/&quot;/g, '"'));
+          //  const data3 = JSON.stringify(data2);
+            populateTable(data2)
 
 
         }
@@ -340,52 +331,47 @@
     <script>
         //POST API ----------------------------
         // number(branch id)~device type~working status~remark~device no~slno~ind id~user id
+        function PostAPI(indata) {
+            debugger;
+            indata = 'IND_DEVICE_UPDATION'+'~' + indata;
+            var response = '';
+            $.ajax({
+                type: "GET",
+                url: "/Others/DEVICEUPDATION",
+                data: { datas: indata },
+                async: false,
+                success: function (response) {
+                   alert(response);
+                }
+            });
 
-        function PostData(DTYpe, wStatus, RemarkText, DNo, SNo, iID) {
+            const dataa = '@ViewData["PostApiResponse"]';
+            var res = '@ViewData["APIRes"]';
+            var res2 ='@Model.idcheck';
+            debugger;
+            return dataa;
+        }
 
-            var user = '@ViewData["user"]';
+
+        function PostData(DTYpe, wStatus, RemarkText, DNo, SNo, iID)
+        {
+
+            var user = '@ViewData["EmpCode"]';
             var brid = '@ViewData["BrID"]';
 
             var baselink = '@ViewData["baseurl"]';
             const apiUrl = baselink + 'smareportsapi/api/SMAModule/PostSMAData';
 
-            //  ;
+            const   indata= brid + '~' + DTYpe + '~' + wStatus + '~' + RemarkText + '~' + DNo + '~' + SNo + '~' + user + '~' + user + '~' + iID;
 
-            const data = {
-                //  p_pagevalue: branch id~device type~working status~remark~device no~slno~ind id~user id~ind Status
-
-                p_pagevalue: brid + '~' + DTYpe + '~' + wStatus + '~' + RemarkText + '~' + DNo + '~' + SNo + '~' + user + '~' + user + '~' + iID,
-                p_paravalue: '1',
-                p_flag: 'IND_DEVICE_UPDATION'
-            };
-
-
-
-            //  ;
-
-            fetch(apiUrl, {
-                method: 'POST', // or 'PUT'
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            })
-                .then(response => response.json())
-                .then(data => {
-
-                    var res = JSON.stringify(data);
-
-                    var data2 = res.replace(/":B2":\s*"|",":B1":"1"|\[{|}]/g, '');
-
-                    console.log('Success:', data);
-                    // ;
-
-                    alert(data2) ? "" : location.reload();
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                });
+           const resp= PostAPI(indata);
+            const dataaa = '@ViewData["PostApiResponse"]';
+           debugger;
+            alert(dataaa);
+            alert(resp);
+           reloadFunction();
         }
+
     </script>
     <script>   //----redirect to index page
 

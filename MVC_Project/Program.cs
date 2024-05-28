@@ -18,6 +18,7 @@ builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddSession();
 builder.Services.AddTransient<DecryptionRepo>();
 builder.Services.AddTransient<GetDataRepo>();
+builder.Services.AddTransient<PostDataRepo>();
 builder.Services.AddTransient<empDto>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

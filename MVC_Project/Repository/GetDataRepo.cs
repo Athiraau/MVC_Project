@@ -6,6 +6,7 @@ using NuGet.Protocol.Plugins;
 using System.Drawing.Text;
 using System.Security.Cryptography.X509Certificates;
 using System.Text.RegularExpressions;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace MVC_Project.Repository
 {
@@ -25,7 +26,7 @@ namespace MVC_Project.Repository
             MenuListModel menu_ViewModel = new MenuListModel();
             List<MenuNameModel> _mN = new List<MenuNameModel>();
             List<SubMenuNameModel> _sN = new List<SubMenuNameModel>();
-
+            List<ChildMenuNameModel> _cN = new List<ChildMenuNameModel>();
             menu_ViewModel.EmpCode = EMPCODE;
 
 
@@ -34,7 +35,7 @@ namespace MVC_Project.Repository
                 //string link = "https://uatapp.manappuram.net/MenuApi/api/MenuApi/GetMenuData/GETMAINMENU_MVC1/";
 
                 string link = baseurl + "MenuApi/api/MenuApi/GetMenuData/GETMAINMENU_MVC1/";
-                client.BaseAddress = new Uri(link + EMPCODE +"~"+ MainHeadID+ "/1");
+                client.BaseAddress = new Uri(link + EMPCODE + "~" + MainHeadID + "/1");
 
                 HttpResponseMessage result = client.GetAsync(client.BaseAddress).Result;
 
@@ -48,58 +49,139 @@ namespace MVC_Project.Repository
                     _mN = JsonConvert.DeserializeObject<List<MenuNameModel>>(data);
                 }
                 menu_ViewModel.M_NAME = _mN;
-             
+                //-----------------------------------------------------------------------------------------------------------------
 
 
-              //  ModelState.Clear();
-                return menu_ViewModel;
+                using (var sclient = new HttpClient())
+                {
+                    //string link = "https://uatapp.manappuram.net/MenuApi/api/MenuApi/GetMenuData/GETMAINMENU_MVC2/";
+
+                    string slink = baseurl + "MenuApi/api/MenuApi/GetMenuData/GETMAINMENU_MVC2/";
+                    sclient.BaseAddress = new Uri(slink + EMPCODE + "/1");
+
+                    HttpResponseMessage sresult = sclient.GetAsync(sclient.BaseAddress).Result;
+
+                    if (sresult.IsSuccessStatusCode)
+                    {
+                        string sdata = sresult.Content.ReadAsStringAsync().Result;
+                        sdata = sdata.Replace(@"{""MenuResDto"":", @"");
+                        sdata = sdata.Replace(@"}]}", @"}]");
+                        sdata = sdata.Replace("\"\"", "\"");
+
+                        _sN = JsonConvert.DeserializeObject<List<SubMenuNameModel>>(sdata);
+                    }
+                    menu_ViewModel.S_NAME = _sN;
+                    //-----------------------------------------------------------------------------------------------------------------
+                    //https://uatapp.manappuram.net/MenuApi/api/MenuApi/GetMenuData/GETCHILDMENU_MVC1/18906/1
+
+                    using (var cclient = new HttpClient())
+                    {
+
+                        string clink = baseurl + "MenuApi/api/MenuApi/GetMenuData/GETCHILDMENU_MVC1/";
+                        cclient.BaseAddress = new Uri(clink + EMPCODE + "/1");
+
+                        HttpResponseMessage cresult = cclient.GetAsync(cclient.BaseAddress).Result;
+
+                        if (cresult.IsSuccessStatusCode)
+                        {
+                            string cdata = cresult.Content.ReadAsStringAsync().Result;
+                            cdata = cdata.Replace(@"{""MenuResDto"":", @"");
+                            cdata = cdata.Replace(@"}]}", @"}]");
+                            cdata = cdata.Replace("\"\"", "\"");
+
+                            _cN = JsonConvert.DeserializeObject<List<ChildMenuNameModel>>(cdata);
+                        }
+                        menu_ViewModel.C_NAME = _cN;
+
+
+
+
+                        //-----------------------------------------------------------------------------------------------------------------
+
+                        //  ModelState.Clear();
+                        return menu_ViewModel;
+                    }
+                }
             }
         }
 
+                public string RemoveSpecialCharacters(string str)
+                {
+                    //-._~+/
+                    //  return Regex.Replace(str, "[^a-zA-Z0-9_~+/-]+", "", RegexOptions.Compiled);
 
-        public string RemoveSpecialCharacters(string str)
+                    return Regex.Replace(str, "[^a-zA-Z0-9_~+/-{}]+", "", RegexOptions.Compiled);
+
+                }
+
+                public dynamic GetMainHeadData(string baseurl, string MainHeadID)
+                {
+
+                    var responseData = " ";
+
+                    using (var client = new HttpClient())
+                    {
+
+                        //string link = "https://uatapp.manappuram.net/MenuApi/api/MenuApi/GetMenuData/GETMAINMENU_MVC1/";
+
+                        string link = baseurl + "MenuApi/api/MenuApi/GetMenuData/GET_MAINHEADNAME/";
+                        client.BaseAddress = new Uri(link + MainHeadID + "/1");
+
+                        HttpResponseMessage result = client.GetAsync(client.BaseAddress).Result;
+
+                        if (result.IsSuccessStatusCode)
+                        {
+                            string data = result.Content.ReadAsStringAsync().Result;
+                            data = data.Replace(@"{""MenuResDto"":", @"");
+                            data = data.Replace(@"}]}", @"}]");
+                            data = data.Replace("\"\"", "\"");
+
+                            responseData = JsonConvert.DeserializeObject<dynamic>(data);
+                        }
+
+
+
+                        //  ModelState.Clear();
+                        return responseData;
+                    }
+                }
+
+        public dynamic GetInternalPageData(string indata, string flag, string baseurl)
         {
-            //-._~+/
-            //  return Regex.Replace(str, "[^a-zA-Z0-9_~+/-]+", "", RegexOptions.Compiled);
 
-            return Regex.Replace(str, "[^a-zA-Z0-9_~+/-{}]+", "", RegexOptions.Compiled);
+           // indata = "1";// "28-SEP-2022";
 
-        }
-
-        public dynamic GetMainHeadData(string baseurl, string MainHeadID)
-        {
-
-            var responseData = " ";
-
+          //  flag= flag.ToUpper();
             using (var client = new HttpClient())
             {
+                string data = "";
 
-                //string link = "https://uatapp.manappuram.net/MenuApi/api/MenuApi/GetMenuData/GETMAINMENU_MVC1/";
+                string link = baseurl + "smareportsapi/api/SMAModule/GetSMAData/";
 
-                string link = baseurl + "MenuApi/api/MenuApi/GetMenuData/GET_MAINHEADNAME/";
-                client.BaseAddress = new Uri(link + MainHeadID + "/1");
+              //  flag = "IND_DEVICE_UPDATION_LOAD";
+                client.BaseAddress = new Uri(link + flag + "/" + indata + "/1");
 
                 HttpResponseMessage result = client.GetAsync(client.BaseAddress).Result;
 
                 if (result.IsSuccessStatusCode)
                 {
-                    string data = result.Content.ReadAsStringAsync().Result;
-                    data = data.Replace(@"{""MenuResDto"":", @"");
-                    data = data.Replace(@"}]}", @"}]");
-                    data = data.Replace("\"\"", "\"");
-
-                    responseData = JsonConvert.DeserializeObject<dynamic>(data);
+                    data = result.Content.ReadAsStringAsync().Result;
+                    //   data = data.Replace(@"{""MenuResDto"":", @"");
+                    //  data = data.Replace(@"}]}", @"}]");
+                    data = data.Replace("\"\"", "");
+                    data = data.Replace("\'", "");
+                  
                 }
 
 
 
+
                 //  ModelState.Clear();
-                return responseData;
+                return data;
             }
         }
 
 
-     
-
     }
 }
+

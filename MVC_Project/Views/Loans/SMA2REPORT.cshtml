@@ -177,125 +177,107 @@
             fetchData();
         }
 
+        function callAPIResponse(indata) {
+            debugger;
+            var response = '';
+            $.ajax({
+                type: "GET",
+                url: "/Loans/SMA2REPORT",
+                data: { datas: indata },
+                async: false,
+                success: function (response) {
+                    //var respon = response;
+                }
+            });
+
+
+
+            const dataz = '@ViewData["ApiResponse"]';
+            return dataz;
+        }
         // Function to fetch data from API
         function fetchData() {
-            // const url = `${apiUrl}?id=${selectedId}`;
-            const apiUrl = 'https://uatapp.manappuram.net/smareportsapi/api/SMAModule/GetSMAData/sma2report/1/1';
+          
+                  
+            const indata ="1";
+            const data = callAPIResponse(indata);
+            const data33 = JSON.parse(data.replace(/&quot;/g, '"'));
+                 //   const data1 = JSON.stringify(data3);
 
-            // Make fetch request
-            fetch(apiUrl)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // const data1 = JSON.stringify(data);
-                    // var data2 = data1.replace(/"''"/g, "");
+            populateTable(data33);
 
-                    // alert(data1);
-                    // let data = await response.content.ReadAsStringAsync();
-                    // var data2 = data1.replace(/{"MenuResDto":/g, "");
-                    // data2 = data2.replace(/}]}/g, "}]");
+                    //function removeQuotesAndHyphens(str) {
+                    //    return str.replace(/^'([^']+)-([^']+)'$/, '$1_$2'); // Combine quote and hyphen removal with underscore
+                    //}
 
-                    // data6 = data1.replace("(", "_");
-                    //     data7 = data6.replace(")", "");
+                    //// Loop and apply regex to each key, also replacing hyphens with underscores
+                    //const cleanData = data.map(obj => {
+                    //    const newObj = {};
+                    //    Object.keys(obj).forEach(key => {
+                    //        const cleanedKey = removeQuotesAndHyphens(key).replace("(", '_');
+                    //        newObj[cleanedKey] = obj[key];
+                    //    });
+                    //    return newObj;
+                    //});
 
-                    //     data8 = data7.replace(".","_")
-                    // const data3 = JSON.parse(data2);
-                    // console.log(data3);
+                    //const dataStr = JSON.stringify(cleanData); // Stringify with indentation
 
 
 
-                    // const data4 = JSON.parse(data1);
+                    //// Remove hyphens from top-level object keys (if needed)
+                    //const dataWithoutHyphens = cleanData.map(obj => {
+                    //    const newObj = {};
+                    //    for (const key in obj) {
+                    //        const cleanedKey = key.replace(")", '_');
+                    //        newObj[cleanedKey] = obj[key];
+                    //    }
+                    //    return newObj;
+                    //});
 
-                    // console.log(data33);
+                    //const dataWithoutHyphens1 = dataWithoutHyphens.map(obj => {
+                    //    const newObj = {};
+                    //    for (const key in obj) {
+                    //        const cleanedKey = key.replace(".", '_');
+                    //        newObj[cleanedKey] = obj[key];
+                    //    }
+                    //    return newObj;
+                    //});
 
+                    //const dataWithoutHyphens2 = dataWithoutHyphens1.map(obj => {
+                    //    const newObj = {};
+                    //    for (const key in obj) {
+                    //        const cleanedKey = key.replace("-", '_');
+                    //        newObj[cleanedKey] = obj[key];
+                    //    }
+                    //    return newObj;
+                    //});
 
+                    //const dataWithoutHyphens3 = dataWithoutHyphens2.map(obj => {
+                    //    const newObj = {};
+                    //    for (const key in obj) {
+                    //        const cleanedKey = key.replace("'", '');
+                    //        newObj[cleanedKey] = obj[key];
+                    //    }
+                    //    return newObj;
+                    //});
 
-                    const data1 = JSON.stringify(data);
+                    //const dataWithoutHyphens4 = dataWithoutHyphens3.map(obj => {
+                    //    const newObj = {};
+                    //    for (const key in obj) {
+                    //        const cleanedKey = key.replace("'", '');
+                    //        newObj[cleanedKey] = obj[key];
+                    //    }
+                    //    return newObj;
+                    //});
+                    //// Convert to JSON string (optional)
+                    //const dataString = JSON.stringify(dataWithoutHyphens4); // Stringify with indentation
 
-                    function removeQuotesAndHyphens(str) {
-                        return str.replace(/^'([^']+)-([^']+)'$/, '$1_$2'); // Combine quote and hyphen removal with underscore
-                    }
-
-                    // Loop and apply regex to each key, also replacing hyphens with underscores
-                    const cleanData = data.map(obj => {
-                        const newObj = {};
-                        Object.keys(obj).forEach(key => {
-                            const cleanedKey = removeQuotesAndHyphens(key).replace("(", '_');
-                            newObj[cleanedKey] = obj[key];
-                        });
-                        return newObj;
-                    });
-
-                    const dataStr = JSON.stringify(cleanData); // Stringify with indentation
-
-
-
-                    // Remove hyphens from top-level object keys (if needed)
-                    const dataWithoutHyphens = cleanData.map(obj => {
-                        const newObj = {};
-                        for (const key in obj) {
-                            const cleanedKey = key.replace(")", '_');
-                            newObj[cleanedKey] = obj[key];
-                        }
-                        return newObj;
-                    });
-
-                    const dataWithoutHyphens1 = dataWithoutHyphens.map(obj => {
-                        const newObj = {};
-                        for (const key in obj) {
-                            const cleanedKey = key.replace(".", '_');
-                            newObj[cleanedKey] = obj[key];
-                        }
-                        return newObj;
-                    });
-
-                    const dataWithoutHyphens2 = dataWithoutHyphens1.map(obj => {
-                        const newObj = {};
-                        for (const key in obj) {
-                            const cleanedKey = key.replace("-", '_');
-                            newObj[cleanedKey] = obj[key];
-                        }
-                        return newObj;
-                    });
-
-                    const dataWithoutHyphens3 = dataWithoutHyphens2.map(obj => {
-                        const newObj = {};
-                        for (const key in obj) {
-                            const cleanedKey = key.replace("'", '');
-                            newObj[cleanedKey] = obj[key];
-                        }
-                        return newObj;
-                    });
-
-                    const dataWithoutHyphens4 = dataWithoutHyphens3.map(obj => {
-                        const newObj = {};
-                        for (const key in obj) {
-                            const cleanedKey = key.replace("'", '');
-                            newObj[cleanedKey] = obj[key];
-                        }
-                        return newObj;
-                    });
-                    // Convert to JSON string (optional)
-                    const dataString = JSON.stringify(dataWithoutHyphens4); // Stringify with indentation
-
-                    const data33 = JSON.parse(dataString);
+                    //const data33 = JSON.parse(dataString);
 
 
+                 //   populateTable(data33);
 
 
-                    populateTable(data33);
-
-
-
-                    // console.log(data3);
-                })
-                .catch(error => {
-                    console.error('There was a problem with the fetch operation:', error);
-                });
         }
 
         function populateTable(data33) {

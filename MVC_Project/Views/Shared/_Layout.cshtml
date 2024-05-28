@@ -62,7 +62,7 @@
                 <!-- end -->
             </ul>
             <!-- Sidebar Open / Close -->
-           @*  <div class="bottom_content">
+            @*  <div class="bottom_content">
             <div class="bottom expand_sidebar">
             <span style="font-size:12px"> Expand</span>
             <i class='bx bx-log-in'></i>
@@ -96,95 +96,61 @@
     </script>
     <script>
         //--------------------------------------SUBMENU LOADING------------------------------------
-        async function getChildMenuList() {
-          //  alert(pageID);
-            var baselink = '@ViewData["baseurl"]';
-            var a = @Model.EmpCode;
-            try {
-               
-                var url = baselink + "MenuApi/api/MenuApi/GetMenuData/GETCHILDMENU_MVC1/" + a + "/1";
-
-                const response = await fetch(url);
-
-                const data = await response.json();
-                const data1 = JSON.stringify(data);
-                // let data = await response.content.ReadAsStringAsync();
-                var data2 = data1.replace(/{"MenuResDto":/g, "");
-                data2 = data2.replace(/}]}/g, "}]");
-                data2 = data2.replace(/""/g, "\"");
-                const data3 = JSON.parse(data2);
-                return data3;
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        }
-        async function getSubMenuList(divider) {
-            //  
-            var baselink = '@ViewData["baseurl"]';
-            try {
-                
-                var a = @Model.EmpCode;
-                var url = baselink +  "MenuApi/api/MenuApi/GetMenuData/GETMAINMENU_MVC2/" + a + "/" + divider;
-                const response = await fetch(url);
-                const data = await response.json();
-                const data1 = JSON.stringify(data);
-                var data2 = data1.replace(/{"MenuResDto":/g, "");
-                data2 = data2.replace(/}]}/g, "}]");
-                data2 = data2.replace(/""/g, "\"");
-                const data3 = JSON.parse(data2);
-                return data3;
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        }
-        async function renderData(id) {
+        
+        async function renderData(id) {    //MEGRDROP 1
             const divider = 1;
-           // var emp = @Model.EmpCode;
-       var     PName = '@ViewData["HeadName"]';
-         //   var ecode = encrypt(emp);
+            // var emp = @Model.EmpCode;
+            var PName = '@ViewData["HeadName"]';
+            //   var ecode = encrypt(emp);
             const container = document.querySelector('.megadrop');
-            const data = await getSubMenuList(divider);
-            const childdata = await getChildMenuList();
-            ;
-            if (!data) {
+           // const data = await getSubMenuList(divider);
+           // const childdata = await getChildMenuList();
+
+            const data = @Html.Raw(Json.Serialize(Model.S_NAME));
+            const childdata = @Html.Raw(Json.Serialize(Model.C_NAME));
+            
+                if (!data) {
                 return;
             }
+
             let idn = id.toString();
             data.forEach(item => {
-                if (item.MAIN_MENU_ID == idn) {
-                    const colDiv = document.createElement('div');
-                    colDiv.className = "col";
-                    const ulcard = document.createElement('ul');
-                    ulcard.className = "mainmenu-list";
-                    const card = document.createElement('li');
-                    //card.className = "subdropbtn";
-                    card.id = item.SUBMENU_ID;
-                    //  card.classList.add('card');
-                    // divID = card.id.toString();
-                    //  
-                    let childID = card.id.toString();
-                    var parent = document.createElement('a');
-                    // parent.id = "graph";
-                    parent.className = "subdropbtn";
-                    parent.href = item.LINK + PName;
-                    parent.textContent = item.SUBMENU_NAME;
+                if (item.submenudivideR_ID == divider) {
+                    if (item.maiN_MENU_ID == idn)
+                    {
+                        const colDiv = document.createElement('div');
+                        colDiv.className = "col";
+                        const ulcard = document.createElement('ul');
+                        ulcard.className = "mainmenu-list";
+                        const card = document.createElement('li');
+                        //card.className = "subdropbtn";
+                        card.id = item.submenU_ID;
+                        //  card.classList.add('card');
+                        // divID = card.id.toString();
+                        
+                        let childID = card.id.toString();
+                        var parent = document.createElement('a');
+                            // parent.id = "graph";
+                           parent.className = "subdropbtn";
+                        parent.href = item.link + PName;
+                        parent.textContent = item.submenU_NAME;
                     //  parent.target = "_blank";
                     var child = document.createElement("ul");
                     child.id = "titleID";
                     child.className = "submenu-list";
                     //--------------child menu----------------------
-                    if (item.LINK == null || item.LINK == "#") {
+                    if (item.link == null || item.link == "#") {
                         // parent.href = null;
                         //  const childdata = await getChildMenuList(divID);
                         parent.textContent = parent.textContent + " >";
                         //const Cdiv = document.createElement('div');
                         //Cdiv.className = "dropdown-content";
                         childdata.forEach(items => {
-                            if (items.SUBMENU_ID == childID) {
+                            if (items.submenU_ID == childID) {
                                 const sublink = document.createElement("a");
-                                sublink.href = items.LINK + PName;
+                                sublink.href = items.link + PName;
                                 //   sublink.target = "_blank";
-                                sublink.textContent = items.CHILDMENU_NAME;
+                                sublink.textContent = items.childmenU_NAME;
                                 child.appendChild(sublink);
                             }
                         });
@@ -200,51 +166,57 @@
                     // colDiv.appendChild(ulcard);
                     container.appendChild(colDiv);
                 }
-            });
+           } });
         }
-        async function renderData1(id) {
+        async function renderData1(id) {  //MEGRDROP 2
             const divider = 2;
             //var emp = @Model.EmpCode;
             //var ecode = encrypt(emp);
 
-           var PName = '@ViewData["HeadName"]';
+            var PName = '@ViewData["HeadName"]';
             const container = document.querySelector('.megadrop1');
-            const data = await getSubMenuList(divider);
-            const childdata = await getChildMenuList();
-            ;
+            //const data = await getSubMenuList(divider);
+            //const childdata = await getChildMenuList();
+
+            const data = @Html.Raw(Json.Serialize(Model.S_NAME));
+            const childdata = @Html.Raw(Json.Serialize(Model.C_NAME));
+            
             if (!data) {
                 return;
             }
             let idn = id.toString();
+            
             data.forEach(item => {
-                if (item.MAIN_MENU_ID == idn) {
+                if (item.submenudivideR_ID == divider)
+                {
+                if (item.maiN_MENU_ID == idn) {
                     const colDiv = document.createElement('div');
                     colDiv.className = "col";
                     const ulcard = document.createElement('ul');
                     ulcard.className = "mainmenu-list";
                     const card = document.createElement('li');
                     //card.className = "subdropbtn";
-                    card.id = item.SUBMENU_ID;
+                    card.id = item.submenU_ID;
                     //  card.classList.add('card');
                     // divID = card.id.toString();
-                    //  
+                    //
                     let childID = card.id.toString();
                     var parent = document.createElement('a');
                     // parent.id = "graph";
                     parent.className = "subdropbtn";
-                    parent.href = item.LINK + PName;
-                    parent.textContent = item.SUBMENU_NAME;
+                    parent.href = item.link + PName;
+                    parent.textContent = item.submenU_NAME;
                     //  parent.target = "_blank";
 
                     var child = document.createElement("ul");
                     child.id = "titleID";
                     child.className = "submenu-list";
-                    // child.textContent = item.SUBMENU_NAME;
+                    // child.textContent = item.submenU_NAME;
 
-                    // 
+                    //
 
                     //--------------child menu----------------------
-                    if (item.LINK == null) {
+                        if (item.link == null || item.link == "#") {
                         // parent.href = null;
                         //  const childdata = await getChildMenuList(divID);
                         parent.textContent = parent.textContent + " >";
@@ -252,11 +224,11 @@
                         //Cdiv.className = "dropdown-content";
                         childdata.forEach(items => {
 
-                            if (items.SUBMENU_ID == childID) {
+                            if (items.submenU_ID == childID) {
                                 const sublink = document.createElement("a");
-                                sublink.href = items.LINK + PName;
+                                sublink.href = items.link + PName;
                                 //   sublink.target = "_blank";
-                                sublink.textContent = items.CHILDMENU_NAME;
+                                sublink.textContent = items.childmenU_NAME;
                                 child.appendChild(sublink);
                             }
                         });
@@ -271,28 +243,31 @@
                     // colDiv.appendChild(ulcard);
                     container.appendChild(colDiv);
                 }
-            });
+           } });
         }
-        async function renderData2(id) {
+        async function renderData2(id) {  //MEGRDROP 2
             const divider = 3;
 
             //var emp = @Model.EmpCode;
             //var ecode = encrypt(emp);
-           var PName = '@ViewData["HeadName"]';
+            var PName = '@ViewData["HeadName"]';
             const container = document.querySelector('.megadrop2');
 
-            const data = await getSubMenuList(divider);
-            const childdata = await getChildMenuList();
+            //const data = await getSubMenuList(divider);
+            //const childdata = await getChildMenuList();
 
-            ;
-
+            const data = @Html.Raw(Json.Serialize(Model.S_NAME));
+            const childdata = @Html.Raw(Json.Serialize(Model.C_NAME));
+                        
             if (!data) {
                 return;
             }
 
             let idn = id.toString();
             data.forEach(item => {
-                if (item.MAIN_MENU_ID == idn) {
+                if (item.submenudivideR_ID == divider)
+                {
+                if (item.maiN_MENU_ID == idn) {
 
                     const colDiv = document.createElement('div');
                     colDiv.className = "col";
@@ -303,27 +278,27 @@
                     const card = document.createElement('li');
 
                     //card.className = "subdropbtn";
-                    card.id = item.SUBMENU_ID;
+                    card.id = item.submenU_ID;
                     //  card.classList.add('card');
                     // divID = card.id.toString();
-                    //  
+                    //
                     let childID = card.id.toString();
                     var parent = document.createElement('a');
                     // parent.id = "graph";
                     parent.className = "subdropbtn";
-                    parent.href = item.LINK + PName;
-                    parent.textContent = item.SUBMENU_NAME;
+                    parent.href = item.link + PName;
+                    parent.textContent = item.submenU_NAME;
                     //  parent.target = "_blank";
 
                     var child = document.createElement("ul");
                     child.id = "titleID";
                     child.className = "submenu-list";
-                    // child.textContent = item.SUBMENU_NAME;
+                    // child.textContent = item.submenU_NAME;
 
-                    // 
+                    //
 
                     //--------------child menu----------------------
-                    if (item.LINK == null) {
+                        if (item.link == null || item.link == "#") {
                         // parent.href = null;
                         //  const childdata = await getChildMenuList(divID);
                         parent.textContent = parent.textContent + " >";
@@ -331,11 +306,11 @@
                         //Cdiv.className = "dropdown-content";
                         childdata.forEach(items => {
 
-                            if (items.SUBMENU_ID == childID) {
+                            if (items.submenU_ID == childID) {
                                 const sublink = document.createElement("a");
-                                sublink.href = items.LINK + PName;
+                                sublink.href = items.link + PName;
                                 //   sublink.target = "_blank";
-                                sublink.textContent = items.CHILDMENU_NAME;
+                                sublink.textContent = items.childmenU_NAME;
                                 child.appendChild(sublink);
                             }
                         });
@@ -349,8 +324,9 @@
                     // colDiv.appendChild(ulcard);
                     container.appendChild(colDiv);
                 }
-            });
+           } });
         }
+        
         // Call the renderData function to display data
         function render(id) {
             $("ul.mainmenu-list").remove();
@@ -437,24 +413,21 @@
             window.location.href = "/Loans/Index?datas=" + code;
         }
 
-        function logout() 
-        {
+        function logout() {
 
-            var root ='';
+            var root = '';
             var baselink = '@ViewData["baseurl"]';
 
-            if (document.location.hostname =='localhost')
-               {                 
-                    window.location.href ="/home/Logout";
-               }
-            else
-               {
-                root = '@ViewData["root"]';              
+            if (document.location.hostname == 'localhost') {
+                window.location.href = "/home/Logout";
+            }
+            else {
+                root = '@ViewData["root"]';
                 domainurl = baselink + root;
                 window.location.href = domainurl + "/Home/Logout";
-                }
+            }
         }
-              
+
 
 
         function loadloginPage() {
@@ -466,6 +439,6 @@
 
     </script>
     <script src="~/js/projectscript.js"></script>
-  
+
 </body>
 </html>

@@ -162,6 +162,7 @@
 
 
         <script>
+        
             function disableFutureDates(dateInputId) {
                 const dateInput = document.getElementById(dateInputId);
                 const today = new Date();
@@ -208,9 +209,30 @@
 
             }
 
+            function callAPIResponse(indata)
+            {
+                var response = '';
+                $.ajax({
+                    type: "GET",
+                    url: "/Loans/SMAFINREPORT",
+                    data: { datas: indata },
+                    async: false,
+                    success: function (response) {
+                        //var respon = response;
+                    }
+                });
+
+
+
+                const dataz = '@ViewData["ApiResponse"]';
+                return dataz;
+            }
+
             function fetchData() {
-                ;
+                
+                
                 var getdate = document.getElementById('firstdate').value;
+               // alert(getdate);
 
                 const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
@@ -220,27 +242,17 @@
                 document.getElementById("processDate").innerHTML = formattedDate;
 
 
-                var baselink = '@ViewData["baseurl"]';
-                const apiUrl = baselink + 'smareportsapi/api/SMAModule/GetSMAData/SMACLASSFINRPT/' + formattedDate + '/1';
-
-
-                // Make fetch request
-                fetch(apiUrl)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        const data1 = JSON.stringify(data);
-                        const data3 = JSON.parse(data1);
-
+                //var baselink = '@ViewData["baseurl"]';
+                //const apiUrl = baselink + 'smareportsapi/api/SMAModule/GetSMAData/SMACLASSFINRPT/' + formattedDate + '/1';
+                const indata = formattedDate;
+                             
+                const data = callAPIResponse(indata);
+                
+               
+                     const   data3 = JSON.parse(data.replace(/&quot;/g, '"'));
                         populateTable(data3)
-                    })
-                    .catch(error => {
-                        console.error('There was a problem with the fetch operation:', error);
-                    });
+                   
+             
             }
 
 

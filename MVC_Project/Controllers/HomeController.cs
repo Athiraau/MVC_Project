@@ -36,10 +36,7 @@ namespace MVC_Project.Controllers
         {
             HttpContext.Session.Clear();
 
-            //test;
-            //mebs
-            //asdf
-            //HttpContext.Session.SetString("EmpName", null);
+             //HttpContext.Session.SetString("EmpName", null);
             //HttpContext.Session.SetString("ecode", null);
             //HttpContext.Session.SetString("BrName", null);
             //HttpContext.Session.SetString("UserId", null);

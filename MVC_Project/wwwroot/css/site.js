@@ -6,12 +6,12 @@ function test() {
     
 }
 function loadDashBoard1() {
-    let ecode = @Model.EmpCode;
+    let ecode = '@Model.EmpCode';
     window.location.href = "/Data/Dashboard?empcode=" + ecode;
 }
 
 function MenuPageLoader() {
-    var id = @ViewData["empCode"];
+    var id = '@ViewData["empCode"]';
 
     var code = encrypt(id);
     window.location.href = "/Data/Index?datas=" + code;

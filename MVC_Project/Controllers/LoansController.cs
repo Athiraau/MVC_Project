@@ -341,6 +341,14 @@ namespace MVC_Project.Controllers
             model = (MenuListModel)_Grepo.GetMainMenuData(UserId, baseurl, MainHeadID);
 
             ViewData["EmpCode"] = UserId;
+            String flag = "SMACLASSFINRPT";
+
+                //  date3 = DateTime.ParseExact(dateString, @"d/M/yyyy", System.Globalization.CultureInfo.InvariantCulture);
+                var resData = _Grepo.GetInternalPageData(datas, flag, baseurl);
+                //  resData = "test ";
+                ViewData["ApiResponse"] = Convert.ToString(resData);
+            
+            //JsonConvert.SerializeObject(resData);
 
 
             return View(model);
@@ -371,7 +379,9 @@ namespace MVC_Project.Controllers
 
             ViewData["EmpCode"] = UserId;
 
-
+            var resData = _Grepo.GetInternalPageData(datas, " ", baseurl);
+            //  resData = "test ";
+            ViewData["ApiResponse"] = Convert.ToString(resData);
             return View(model);
 
         }
@@ -398,7 +408,10 @@ namespace MVC_Project.Controllers
             model = (MenuListModel)_Grepo.GetMainMenuData(UserId, baseurl, MainHeadID);
 
             ViewData["EmpCode"] = UserId;
-
+          
+            var resData = _Grepo.GetInternalPageData(datas, "sma2report", baseurl);
+            //  resData = "test ";
+            ViewData["ApiResponse"] = Convert.ToString(resData);
 
             return View(model);
 
