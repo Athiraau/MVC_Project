@@ -1,14 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MVC_Project.Models;
-using System.Diagnostics;
-using MVC_Project.Models.MenuModel;
-using Newtonsoft.Json;
-using System.Text.Encodings.Web;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Text.RegularExpressions;
-using System.Data;
 using MVC_Project.Repository;
-using NuGet.Configuration;
 
 namespace MVC_Project.Controllers
 {
@@ -35,7 +26,7 @@ namespace MVC_Project.Controllers
             rootfolder = _configuration.GetValue<string>("BasValues:root");
         }
 
-        
+
         public IActionResult Index()
         {
             return View();
@@ -43,7 +34,10 @@ namespace MVC_Project.Controllers
 
         public IActionResult Logout(string datas)
         {
-           HttpContext.Session.Clear();
+            HttpContext.Session.Clear();
+
+            //test;
+            //mebs
             //HttpContext.Session.SetString("EmpName", null);
             //HttpContext.Session.SetString("ecode", null);
             //HttpContext.Session.SetString("BrName", null);
@@ -52,9 +46,9 @@ namespace MVC_Project.Controllers
             //HttpContext.Session.SetString("BrID", null);
             //HttpContext.Session.SetString("headname", null);
 
-             //model.M_NAME = "";
+            //model.M_NAME = "";
             return View();
-           
+
         }
     }
 }
