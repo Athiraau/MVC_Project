@@ -293,32 +293,11 @@
             var baselink = '@ViewData["baseurl"]';
 
             const apiUrl = baselink + 'MenuApi/api/MenuApi/GetMenuData/MEBSREPORTS/DOORSTEP_PLEDGE_REPORT~';
-            const url = `${apiUrl}${selectedId}~${fDate}~${tDate}/1`
-            
-            // Make fetch request
-            fetch(url)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    const data1 = JSON.stringify(data);
-                    // alert(data1);
-                    // let data = await response.content.ReadAsStringAsync();
-                    var data2 = data1.replace(/{"MenuResDto":/g, "");
-                    data2 = data2.replace(/}]}/g, "}]");
-                    data2 = data2.replace(/""/g, "\"");
-                    const data3 = JSON.parse(data2);
+            const url = `${apiUrl}${selectedId}~${fDate}~${tDate}/1`;
 
-                    // console.log(data3);
+           // const indata=""
 
-                    populateTable(data3)
-                })
-                .catch(error => {
-                    console.error('There was a problem with the fetch operation:', error);
-                });
+            callAPIResponse();
 
             Fdate = document.getElementById("FromDateSpan");
             Tdate = document.getElementById("ToDateSpan");
@@ -488,36 +467,7 @@
             });
             window.open(URL.createObjectURL(pdf.output("blob")));
         }
-        // function exportPdf() {
-        //     var pdf = new jsPDF();
-        //     pdf.autoTable({
-        //         html: '#table-body',
-        //         startY: 25,
-        //         theme: 'grid',
-        //         columnStyles: {
-        //             0: { cellWidth: 20 },
-        //             1: { cellWidth: 8 },
-        //             2: { cellWidth: 25 },
-        //             3: { cellWidth: 25 },
-        //             4: { cellWidth: 25 },
-        //             5: { cellWidth: 25 },
-        //             6: { cellWidth: 10 },
-        //             7: { cellWidth: 10 },
-        //             8: { cellWidth: 12 },
-        //             9: { cellWidth: 22 }
-        //         },
-        //         // Option 1: Using styles object (affects all table cells)
-        //         // styles: {
-        //         //     fontSize: 8
-        //         // },
-        //         // Option 2: Using bodyStyles object (affects body cells)
-        //         bodyStyles: {
-        //             fontSize: 8
-        //         },
-        //     });
-
-        //     window.open(URL.createObjectURL(pdf.output("blob")))
-        // }
+       
     </script>
 
     <script>

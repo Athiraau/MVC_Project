@@ -26,8 +26,10 @@ namespace MVC_Project.Controllers
 
     private readonly IConfiguration _configuration;
 
+
         public object Session { get; private set; }
-        public string MainHeadID="1";
+        public string MainHeadID = "1";
+        public string ResponseData = "";
 
         public LoansController(ILogger<HomeController> logger, DecryptionRepo repo, GetDataRepo grepo, IConfiguration configuration)
         {
@@ -49,27 +51,26 @@ namespace MVC_Project.Controllers
 
         public IActionResult GoldOverdraft(string datas)
         {
-            string decryptedData = " ";
-            decryptedData = Convert.ToString(_repo.DecryptStringAES(datas));
+
             ViewData["baseurl"] = baseurl;
             ViewData["root"] = rootfolder;
+            ViewData["HeadName"] = datas;
 
-
+           
+            ViewData["user"] = HttpContext.Session.GetString("ecode");
             var empcode = HttpContext.Session.GetString("ecode");
             var empname = HttpContext.Session.GetString("EmpName");
             var branchname = HttpContext.Session.GetString("BrName");
             var UserId = HttpContext.Session.GetString("UserId");
+            var brID = HttpContext.Session.GetString("BrID");
 
-            ViewData["empName"] = empname;
-            ViewData["empCode"] = empcode;
-            ViewData["brName"] = branchname;
-            ViewData["UserId"] = UserId;
-
+            ViewData["BrID"] = brID;
             MenuListModel model = new MenuListModel();
             model = (MenuListModel)_Grepo.GetMainMenuData(UserId, baseurl, MainHeadID);
 
             ViewData["EmpCode"] = UserId;
-
+            String flag = "";
+                        
             return View(model);
         }
 
@@ -88,6 +89,7 @@ namespace MVC_Project.Controllers
             var UserId = HttpContext.Session.GetString("UserId");
 
             HttpContext.Session.SetString("headname", datas);
+           // datas = "AAAA";
 
             MenuListModel model = new MenuListModel();
             model = (MenuListModel)_Grepo.GetMainMenuData(UserId, baseurl, MainHeadID);
@@ -164,9 +166,6 @@ namespace MVC_Project.Controllers
             ViewData["root"] = rootfolder;
             ViewData["HeadName"] = datas;
 
-            // string decryptedData = " ";
-            //  decryptedData = Convert.ToString(_repo.DecryptStringAES(datas));
-            //  decryptedData = "18906";
 
             ViewData["user"] = HttpContext.Session.GetString("ecode");
             var empcode = HttpContext.Session.GetString("ecode");
@@ -292,6 +291,7 @@ namespace MVC_Project.Controllers
 
         public IActionResult SMAERRORBALANCE(string datas)
         {
+          
             ViewData["baseurl"] = baseurl;
             ViewData["root"] = rootfolder;
             ViewData["HeadName"] = datas;
@@ -312,7 +312,6 @@ namespace MVC_Project.Controllers
             model = (MenuListModel)_Grepo.GetMainMenuData(UserId, baseurl, MainHeadID);
 
             ViewData["EmpCode"] = UserId;
-
 
             return View(model);
 
@@ -341,14 +340,7 @@ namespace MVC_Project.Controllers
             model = (MenuListModel)_Grepo.GetMainMenuData(UserId, baseurl, MainHeadID);
 
             ViewData["EmpCode"] = UserId;
-            String flag = "SMACLASSFINRPT";
-
-                //  date3 = DateTime.ParseExact(dateString, @"d/M/yyyy", System.Globalization.CultureInfo.InvariantCulture);
-                var resData = _Grepo.GetInternalPageData(datas, flag, baseurl);
-                //  resData = "test ";
-                ViewData["ApiResponse"] = Convert.ToString(resData);
-            
-            //JsonConvert.SerializeObject(resData);
+           
 
 
             return View(model);
@@ -379,22 +371,20 @@ namespace MVC_Project.Controllers
 
             ViewData["EmpCode"] = UserId;
 
-            var resData = _Grepo.GetInternalPageData(datas, " ", baseurl);
-            //  resData = "test ";
-            ViewData["ApiResponse"] = Convert.ToString(resData);
+            
             return View(model);
 
         }
 
         public IActionResult SMA2REPORT(string datas)
         {
+
+            string flag = datas;
             ViewData["baseurl"] = baseurl;
             ViewData["root"] = rootfolder;
             ViewData["HeadName"] = datas;
 
-            // string decryptedData = " ";
-            //  decryptedData = Convert.ToString(_repo.DecryptStringAES(datas));
-            //  decryptedData = "18906";
+          
 
             ViewData["user"] = HttpContext.Session.GetString("ecode");
             var empcode = HttpContext.Session.GetString("ecode");
@@ -409,16 +399,18 @@ namespace MVC_Project.Controllers
 
             ViewData["EmpCode"] = UserId;
           
-            var resData = _Grepo.GetInternalPageData(datas, "sma2report", baseurl);
-            //  resData = "test ";
-            ViewData["ApiResponse"] = Convert.ToString(resData);
-
             return View(model);
-
         }
 
+        public string getAPIData(string datas)
+        {
+            string[] DataArray = datas.Split('~');
 
 
-
+            string flag = DataArray[0];
+           string  indata = DataArray[1];   
+            var resData = _Grepo.GetInternalPageData(indata, flag, baseurl);
+            return resData; 
+        }
     }
 }

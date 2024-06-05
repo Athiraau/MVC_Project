@@ -175,7 +175,6 @@ namespace MVC_Project.Repository
 
 
 
-
                 //  ModelState.Clear();
                 return data;
             }

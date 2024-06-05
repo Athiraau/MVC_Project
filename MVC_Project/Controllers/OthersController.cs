@@ -56,9 +56,7 @@ namespace MVC_Project.Controllers
 
         public IActionResult DEVICEUPDATION(string datas)
         {
-            string[] st= datas.Split('~');
-
-            string flag = st[0].ToString().ToUpper();
+           
 
             ViewData["baseurl"] = baseurl;
             ViewData["root"] = rootfolder;
@@ -78,52 +76,33 @@ namespace MVC_Project.Controllers
             model = (MenuListModel)_Grepo.GetMainMenuData(UserId, baseurl, MainHeadID);
 
             ViewData["EmpCode"] = UserId;
-            //  string[] input = datas.Split('~');
-          flag = "IND_DEVICE_UPDATION_LOAD";
-            
-            var resData = _Grepo.GetInternalPageData(UserId, flag, baseurl);
-            ViewData["ApiResponse"] = "";
-            ViewData["ApiResponse"] = Convert.ToString(resData);
-          
+                
             return View(model);
 
         }
-
-
-        public IActionResult DEVICEUPDATION_POST(string datas)
+        public string getAPIData(string datas)
         {
+            string[] DataArray = datas.Split('~');
 
 
-            ViewData["baseurl"] = baseurl;
-            ViewData["root"] = rootfolder;
-
-
-            ViewData["user"] = HttpContext.Session.GetString("ecode");
-            var empcode = HttpContext.Session.GetString("ecode");
-            var empname = HttpContext.Session.GetString("EmpName");
-            var branchname = HttpContext.Session.GetString("BrName");
-            var UserId = HttpContext.Session.GetString("UserId");
-            var brID = HttpContext.Session.GetString("BrID");
-
-
-            ViewData["BrID"] = brID;
-            MenuListModel model = new MenuListModel();
-            model = (MenuListModel)_Grepo.GetMainMenuData(UserId, baseurl, MainHeadID);
-
-            ViewData["EmpCode"] = UserId;
-
-            var resData = _Prepo.PostInternalPageData(datas, "IND_DEVICE_UPDATION", baseurl);
-            ViewData["t2"] = resData.Result;
-            // model.Response = _Grepo.RemoveSpecialCharacters(resData.Result);
-            //string s = resData.Result.Replace("", "");
-            ViewData["t1"] = model.Response;
-            model.Response = resData.Result;
-
-            // return View(model);
-            return View("DEVICEUPDATION", model);
-            // return RedirectToAction("DEVICEUPDATION");
-
+            string flag = DataArray[0];
+            string indata = DataArray[1];
+            var resData = _Grepo.GetInternalPageData(indata, flag, baseurl);
+            return resData;
         }
-      
+
+       public dynamic  postAPIData(string datas)
+        {
+            string[] DataArray = datas.Split('^');
+
+
+            string flag = DataArray[0];
+            string indata = DataArray[1];
+            var resData = _Prepo.PostInternalPageData(indata, flag, baseurl);
+            return resData;
+        }
+
+
+
     }
 }

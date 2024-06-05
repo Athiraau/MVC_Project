@@ -123,43 +123,34 @@
         window.onload = function OnloadFunction()
         { fetchData();    }
 
-        function callAPIResponse(indata) {
+       
+
+        function fetchData() {
                       
+            var user = '@ViewData["EmpCode"]';
+            var baselink = '@ViewData["baseurl"]';
+           const indata = user;
+            callAPIResponse(indata);
+           
+
+        }
+
+        function callAPIResponse(indata) {
+
+            indata = "IND_DEVICE_UPDATION_LOAD" + "~" + indata;
             var response = '';
-          indata = "IND_DEVICE_UPDATION_LOAD" + "~" + indata;
-          
             $.ajax({
                 type: "GET",
-                url: "/Others/DEVICEUPDATION",
+                url: "/Others/getAPIData",
                 data: { datas: indata },
                 async: false,
                 success: function (response) {
-                    //var respon = response;
+
+                    const data2 = JSON.parse(response);
+                    populateTable(data2);
                 }
             });
-
-            const dataz = '@ViewData["ApiResponse"]';
-            return dataz;
         }
-
-        function fetchData() {
-
-          
-            //  var user = '348761';//'14672';
-            var user = '@ViewData["EmpCode"]';
-            // var brid = '@ViewData["BrID"]';
-            var baselink = '@ViewData["baseurl"]';
-           const indata = user;
-            const data = callAPIResponse(indata);
-           debugger;
-
-            const data2 = JSON.parse(data.replace(/&quot;/g, '"'));
-          //  const data3 = JSON.stringify(data2);
-            populateTable(data2)
-
-
-        }
-
 
 
         //populate table
@@ -333,23 +324,22 @@
         // number(branch id)~device type~working status~remark~device no~slno~ind id~user id
         function PostAPI(indata) {
             debugger;
-            indata = 'IND_DEVICE_UPDATION'+'~' + indata;
-            var response = '';
+            indata = 'IND_DEVICE_UPDATION' + '^' + indata;
+           // var response = '';
+            alert(indata);
             $.ajax({
                 type: "GET",
-                url: "/Others/DEVICEUPDATION",
-                data: { datas: indata },
+                url: "/Others/postAPIData",
+                data: {datas: indata },
                 async: false,
                 success: function (response) {
-                   alert(response);
+                    alert(response);
+                    
+
+                  
                 }
             });
 
-            const dataa = '@ViewData["PostApiResponse"]';
-            var res = '@ViewData["APIRes"]';
-            var res2 ='@Model.idcheck';
-            debugger;
-            return dataa;
         }
 
 
@@ -364,11 +354,8 @@
 
             const   indata= brid + '~' + DTYpe + '~' + wStatus + '~' + RemarkText + '~' + DNo + '~' + SNo + '~' + user + '~' + user + '~' + iID;
 
-           const resp= PostAPI(indata);
-            const dataaa = '@ViewData["PostApiResponse"]';
-           debugger;
-            alert(dataaa);
-            alert(resp);
+           PostAPI(indata);
+                             
            reloadFunction();
         }
 

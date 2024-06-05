@@ -209,30 +209,29 @@
 
             }
 
-            function callAPIResponse(indata)
-            {
+            function callAPIResponse() {
+
+                debugger;
+               const dt= fetchDate();
+                var dataz;
+                indata = "SMACLASSFINRPT"+"~"+dt;
                 var response = '';
                 $.ajax({
                     type: "GET",
-                    url: "/Loans/SMAFINREPORT",
+                    url: "/Loans/getAPIData",
                     data: { datas: indata },
                     async: false,
                     success: function (response) {
-                        //var respon = response;
+
+                        const data3 = JSON.parse(response);
+                        populateTable(data3)
                     }
                 });
-
-
-
-                const dataz = '@ViewData["ApiResponse"]';
-                return dataz;
             }
-
-            function fetchData() {
-                
-                
+            function fetchDate()
+            {
                 var getdate = document.getElementById('firstdate').value;
-               // alert(getdate);
+                // alert(getdate);
 
                 const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
@@ -240,25 +239,25 @@
                 const formattedMonth = months[parseInt(month, 10) - 1];
                 const formattedDate = `${day}-${formattedMonth}-${year}`;
                 document.getElementById("processDate").innerHTML = formattedDate;
+                return formattedDate;
+            }
 
-
-                //var baselink = '@ViewData["baseurl"]';
-                //const apiUrl = baselink + 'smareportsapi/api/SMAModule/GetSMAData/SMACLASSFINRPT/' + formattedDate + '/1';
-                const indata = formattedDate;
-                             
-                const data = callAPIResponse(indata);
-                
-               
-                     const   data3 = JSON.parse(data.replace(/&quot;/g, '"'));
-                        populateTable(data3)
-                   
+            function fetchData() {
+                alert("fetch");
+            var baselink = '@ViewData["baseurl"]';
+               callAPIResponse();
+            //    //const apiUrl = baselink + 'smareportsapi/api/SMAModule/GetSMAData/SMACLASSFINRPT/' + formattedDate + '/1';
+            //    const indata = formattedDate;
+            //       const data = callAPIResponse(indata);
+            //   const   data3 = JSON.parse(data.replace(/&quot;/g, '"'));
+            // populateTable(data3)                   
              
             }
 
 
             // Function to create and populate table with data
             function populateTable(data) {
-
+                debugger;
                 // Get reference to the table body
                 const tableBody = document.getElementById('table-body');
 

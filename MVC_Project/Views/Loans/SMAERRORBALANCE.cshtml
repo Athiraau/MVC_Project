@@ -1,8 +1,10 @@
-﻿
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
 @{
     ViewData["Title"] = "SMAERRORBALANCE";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -198,7 +200,40 @@
     </div>
     <script>
 
+        function callAPIResponse(indata) {
+            debugger;
+            var dataz;
+            var response = '';
+            $.ajax({
+                type: "GET",
+                url: "/Loans/getAPIData",
+                data: { datas: indata },
+                async: false,
+                success: function (response) {
 
+                    const data3 = JSON.parse(response);
+                    populateTable(data33);
+                }
+            });
+        }
+
+        function callAPIResponse1(indata) {
+            debugger;
+            var dataz;
+            var response = '';
+            $.ajax({
+                type: "GET",
+                url: "/Loans/getAPIData",
+                data: { datas: indata },
+                async: false,
+                success: function (response) {
+
+                    const ndata3 = JSON.parse(response);
+                    populateTable1(ndata3);
+                }
+            });
+        }
+       
 
         function loadIndex() {
 
@@ -455,41 +490,19 @@
     <script>
         window.onload = function exampleFunction() {
 
-            fetchData();
-            fetchData2();
+           fetchData();
+           fetchData2();
         }
 
         // Function to fetch data from API
         function fetchData() {
-
+           
 
             var baselink = '@ViewData["baseurl"]';
-            const apiUrl = baselink + 'smareportsapi/api/SMAModule/GetSMAData/ERRORBALANCE/1/1';
             
-            // Make fetch request
-            fetch(apiUrl)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    const data1 = JSON.stringify(data);
-                    // alert(data1);
-                    // let data = await response.content.ReadAsStringAsync();
-                    // var data2 = data1.replace(/{"MenuResDto":/g, "");
-                    // data2 = data2.replace(/}]}/g, "}]");
-                    // var  data2 = data1.replace(/'/g, "");
-                    const data3 = JSON.parse(data1);
-
-                    // console.log(data3);
-
-                    populateTable(data3)
-                })
-                .catch(error => {
-                    console.error('There was a problem with the fetch operation:', error);
-                });
+            const indata = "ERRORBALANCE~1";
+             callAPIResponse(indata);
+            
         }
 
         function populateTable(data3) {
@@ -588,34 +601,15 @@
         //DEPARTMENT WISE
 
         function fetchData2() {
-
+          
+            
             var baselink = '@ViewData["baseurl"]';
-            const apiUrl = baselink + 'smareportsapi/api/SMAModule/GetSMAData/ERRORBALANCE_DEPT/1/1';
+            const indata = "ERRORBALANCE_DEPT~1";
 
-            // Make fetch request
-            fetch(apiUrl)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    const data1 = JSON.stringify(data);
-                    // alert(data1);
-                    // let data = await response.content.ReadAsStringAsync();
-                    // var data2 = data1.replace(/{"MenuResDto":/g, "");
-                    // data2 = data2.replace(/}]}/g, "}]");
-                    // var  data2 = data1.replace(/'/g, "");
-                    const ndata3 = JSON.parse(data1);
+            callAPIResponse1(indata);
 
-                    // console.log(data3);
-
-                    populateTable1(ndata3)
-                })
-                .catch(error => {
-                    console.error('There was a problem with the fetch operation:', error);
-                });
+           
+              
         }
     </script>
 

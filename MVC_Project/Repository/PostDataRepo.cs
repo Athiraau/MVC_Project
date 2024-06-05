@@ -26,63 +26,56 @@ namespace MVC_Project.Repository
         }
 
 
-      
 
-                public string RemoveSpecialCharacters(string str)
-                {
-                    //-._~+/
-                    //  return Regex.Replace(str, "[^a-zA-Z0-9_~+/-]+", "", RegexOptions.Compiled);
 
-                    return Regex.Replace(str, "[^a-zA-Z0-9_~+/-{}]+", "", RegexOptions.Compiled);
+        public string RemoveSpecialCharacters(string str)
+        {
+            //-._~+/
+            //  return Regex.Replace(str, "[^a-zA-Z0-9_~+/-]+", "", RegexOptions.Compiled);
 
-                }
+            return Regex.Replace(str, "[^a-zA-Z0-9_~+/-{}]+", "", RegexOptions.Compiled);
 
-             
+        }
+
+
         public async Task<dynamic> PostInternalPageData(string indata, string flag, string baseurl)
         {
             string data = "";
             using (HttpClient client = new HttpClient())
             {
-                try
-                {
-                    string content = JsonConvert.SerializeObject(new { p_pagevalue = indata, p_paravalue = "1", p_flag= flag});
-                    var buffer = Encoding.UTF8.GetBytes(content);
-                    var byteContent = new ByteArrayContent(buffer);
-                    byteContent.Headers.ContentType= new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
-                        
 
-                    string url2 = baseurl + "smareportsapi/api/SMAModule/PostSMAData"; 
-                    HttpResponseMessage response2 = await client.PostAsync(url2, byteContent);
-                    if(response2.IsSuccessStatusCode)
-                    {
-                        data = response2.Content.ReadAsStringAsync().Result;
-                        data = data.Replace("\"\"", "");
-                        data = data.Replace("\'", "");
-                        data = data.Replace(@"""RESP"":", @"");
-                        
-                    }
+                string content = JsonConvert.SerializeObject(new { p_pagevalue = indata, p_paravalue = "1", p_flag = flag });
+                var buffer = Encoding.UTF8.GetBytes(content);
+                var byteContent = new ByteArrayContent(buffer);
+                byteContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
-                    //response2.EnsureSuccessStatusCode();
-                    //string responseBody2 = await response2.Content.ReadAsStringAsync();
-                   // return responseBody2;
-                   
-                }
-                catch (HttpRequestException e)
+
+                string url2 = baseurl + "smareportsapi/api/SMAModule/PostSMAData";
+                HttpResponseMessage response2 = await client.PostAsync(url2, byteContent);
+                if (response2.IsSuccessStatusCode)
                 {
-                    Console.WriteLine("\nException Caught!");
-                    Console.WriteLine("MessAge :{0} ", e.Message);
+                    data = response2.Content.ReadAsStringAsync().Result;
+                    data = data.Replace("\"\"", "");
+                    data = data.Replace("\'", "");
+                    data = data.Replace(@"""RESP"":", @"");
+
                 }
-                data = RemoveSpecialCharacters(data);
-              
-                return data;
+
+                //response2.EnsureSuccessStatusCode();
+                //string responseBody2 = await response2.Content.ReadAsStringAsync();
+                // return responseBody2;
+
             }
-               
+
+            data = RemoveSpecialCharacters(data);
+
+            return data;
+        }
+    }
            
        
             
         }
 
 
-    }
-}
 

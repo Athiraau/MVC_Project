@@ -172,115 +172,44 @@
         
     </div>
     <script>
-        window.onload = function exampleFunction() {
-
-            fetchData();
+        window.onload = function FetchFunction() {
+            const indata = "1";
+            callAPIResponse(indata);
+         //   fetchData();
         }
 
         function callAPIResponse(indata) {
             debugger;
+            var dataz;
+            indata = "sma2report~1";
             var response = '';
             $.ajax({
                 type: "GET",
-                url: "/Loans/SMA2REPORT",
+                url: "/Loans/getAPIData",
                 data: { datas: indata },
                 async: false,
                 success: function (response) {
-                    //var respon = response;
+
+                    const data33 = JSON.parse(response);
+                    populateTable(data33);
                 }
             });
-
-
-
-            const dataz = '@ViewData["ApiResponse"]';
-            return dataz;
         }
         // Function to fetch data from API
-        function fetchData() {
+        //function fetchData() {
           
                   
-            const indata ="1";
-            const data = callAPIResponse(indata);
-            const data33 = JSON.parse(data.replace(/&quot;/g, '"'));
-                 //   const data1 = JSON.stringify(data3);
-
-            populateTable(data33);
-
-                    //function removeQuotesAndHyphens(str) {
-                    //    return str.replace(/^'([^']+)-([^']+)'$/, '$1_$2'); // Combine quote and hyphen removal with underscore
-                    //}
-
-                    //// Loop and apply regex to each key, also replacing hyphens with underscores
-                    //const cleanData = data.map(obj => {
-                    //    const newObj = {};
-                    //    Object.keys(obj).forEach(key => {
-                    //        const cleanedKey = removeQuotesAndHyphens(key).replace("(", '_');
-                    //        newObj[cleanedKey] = obj[key];
-                    //    });
-                    //    return newObj;
-                    //});
-
-                    //const dataStr = JSON.stringify(cleanData); // Stringify with indentation
-
-
-
-                    //// Remove hyphens from top-level object keys (if needed)
-                    //const dataWithoutHyphens = cleanData.map(obj => {
-                    //    const newObj = {};
-                    //    for (const key in obj) {
-                    //        const cleanedKey = key.replace(")", '_');
-                    //        newObj[cleanedKey] = obj[key];
-                    //    }
-                    //    return newObj;
-                    //});
-
-                    //const dataWithoutHyphens1 = dataWithoutHyphens.map(obj => {
-                    //    const newObj = {};
-                    //    for (const key in obj) {
-                    //        const cleanedKey = key.replace(".", '_');
-                    //        newObj[cleanedKey] = obj[key];
-                    //    }
-                    //    return newObj;
-                    //});
-
-                    //const dataWithoutHyphens2 = dataWithoutHyphens1.map(obj => {
-                    //    const newObj = {};
-                    //    for (const key in obj) {
-                    //        const cleanedKey = key.replace("-", '_');
-                    //        newObj[cleanedKey] = obj[key];
-                    //    }
-                    //    return newObj;
-                    //});
-
-                    //const dataWithoutHyphens3 = dataWithoutHyphens2.map(obj => {
-                    //    const newObj = {};
-                    //    for (const key in obj) {
-                    //        const cleanedKey = key.replace("'", '');
-                    //        newObj[cleanedKey] = obj[key];
-                    //    }
-                    //    return newObj;
-                    //});
-
-                    //const dataWithoutHyphens4 = dataWithoutHyphens3.map(obj => {
-                    //    const newObj = {};
-                    //    for (const key in obj) {
-                    //        const cleanedKey = key.replace("'", '');
-                    //        newObj[cleanedKey] = obj[key];
-                    //    }
-                    //    return newObj;
-                    //});
-                    //// Convert to JSON string (optional)
-                    //const dataString = JSON.stringify(dataWithoutHyphens4); // Stringify with indentation
-
-                    //const data33 = JSON.parse(dataString);
-
-
-                 //   populateTable(data33);
-
-
-        }
+        //const indata ="1";
+        //callAPIResponse(indata);
+                       
+        ////    const data33 = JSON.parse(data.replace(/&quot;/g, '"'));
+        ////    populateTable(data33);
+   
+        //}
 
         function populateTable(data33) {
+
+            
             const tableBody = document.getElementById('table-body1');
             tableBody.innerHTML = '';
 
