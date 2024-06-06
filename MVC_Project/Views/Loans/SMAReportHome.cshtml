@@ -45,8 +45,8 @@
 </head>
 <body>
     <div class="pagecontiner">
-        <div class="dcontainer1">
-
+@*        <div class="dcontainer1">
+*@
             <center>
                 <div class="secondcontainer">
                     <p class="m-auto fw-bolder h6" style="font-size:small;">SMA CLASSIFICATION REPORT</p>
@@ -94,8 +94,8 @@
                     </div>
                 </div>
             </form>
-        </div>
-
+@*        </div>
+*@
 
 
 
@@ -120,7 +120,8 @@
                         <th colspan="2">
                         </th>
                         <th class="text-center fs-10" colspan="21">
-                            BRANCH NAME : A.O.VALAPAD -- BRANCH ID : 0 <span id="FromDateSpan"></span>
+                            <label style="font-size:x-small">BRANCH NAME : @httpContextAccessor.HttpContext.Session.GetString("BrName")</label><label style="font-size:x-small">|  BRANCH ID : @httpContextAccessor.HttpContext.Session.GetString("BrID")</label>
+                            <span id="FromDateSpan"></span>
                             To <span id="ToDateSpan"></span>
                         </th>
 

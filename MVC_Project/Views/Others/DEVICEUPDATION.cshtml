@@ -137,11 +137,15 @@
 
         function callAPIResponse(indata) {
 
-            indata = "IND_DEVICE_UPDATION_LOAD" + "~" + indata;
+            var _link = '';
+            if (document.location.hostname == 'localhost') { _link = "/Others/getAPIData"; }
+            else { var root = '@ViewData["root"]'; _link = "/" + root + "/Others/getAPIData"; }
+             
+            indata = "IND_DEVICE_UPDATION_LOAD" + "^" + indata;
             var response = '';
             $.ajax({
                 type: "GET",
-                url: "/Others/getAPIData",
+                url: _link,
                 data: { datas: indata },
                 async: false,
                 success: function (response) {
@@ -155,7 +159,7 @@
 
         //populate table
         function populateTable(data2) {
-            //  ;
+             
             // Get reference to the table body
             const tableBody = document.getElementById('table-body1');
 
@@ -283,8 +287,8 @@
                     else {
                         const RemarkText = textField.value;   //REMARKS
 
-                        const wStatus = dropdownValue[item.DEVICE_NO];   //working or not working
-                        const iID = dropdownValues[item.DEVICE_NO];          // personal or official
+                        const wStatus = dropdownValue[item.DEVICE_NO];   
+                        const iID = dropdownValues[item.DEVICE_NO];         
                         const DTYpe = item.DEVICETYPE;
                         const DNo = item.DEVICE_NO;
                         const SNo = item.SL_NO;
@@ -323,17 +327,21 @@
         //POST API ----------------------------
         // number(branch id)~device type~working status~remark~device no~slno~ind id~user id
         function PostAPI(indata) {
-            debugger;
+
+            var _link = '';
+            if (document.location.hostname == 'localhost') { _link = "/Others/postAPIData"; }
+            else { var root = '@ViewData["root"]'; _link = "/" + root + "/Others/postAPIData"; }
+             
             indata = 'IND_DEVICE_UPDATION' + '^' + indata;
            // var response = '';
-            alert(indata);
+           // alert(indata);
             $.ajax({
-                type: "GET",
-                url: "/Others/postAPIData",
+                type: "POST",
+                url: _link,
                 data: {datas: indata },
                 async: false,
                 success: function (response) {
-                    alert(response);
+                    alert('eeeee');
                     
 
                   

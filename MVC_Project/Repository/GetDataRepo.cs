@@ -32,7 +32,6 @@ namespace MVC_Project.Repository
 
             using (var client = new HttpClient())
             {
-                //string link = "https://uatapp.manappuram.net/MenuApi/api/MenuApi/GetMenuData/GETMAINMENU_MVC1/";
 
                 string link = baseurl + "MenuApi/api/MenuApi/GetMenuData/GETMAINMENU_MVC1/";
                 client.BaseAddress = new Uri(link + EMPCODE + "~" + MainHeadID + "/1");
@@ -54,7 +53,6 @@ namespace MVC_Project.Repository
 
                 using (var sclient = new HttpClient())
                 {
-                    //string link = "https://uatapp.manappuram.net/MenuApi/api/MenuApi/GetMenuData/GETMAINMENU_MVC2/";
 
                     string slink = baseurl + "MenuApi/api/MenuApi/GetMenuData/GETMAINMENU_MVC2/";
                     sclient.BaseAddress = new Uri(slink + EMPCODE + "/1");
@@ -72,7 +70,6 @@ namespace MVC_Project.Repository
                     }
                     menu_ViewModel.S_NAME = _sN;
                     //-----------------------------------------------------------------------------------------------------------------
-                    //https://uatapp.manappuram.net/MenuApi/api/MenuApi/GetMenuData/GETCHILDMENU_MVC1/18906/1
 
                     using (var cclient = new HttpClient())
                     {
@@ -122,7 +119,6 @@ namespace MVC_Project.Repository
                     using (var client = new HttpClient())
                     {
 
-                        //string link = "https://uatapp.manappuram.net/MenuApi/api/MenuApi/GetMenuData/GETMAINMENU_MVC1/";
 
                         string link = baseurl + "MenuApi/api/MenuApi/GetMenuData/GET_MAINHEADNAME/";
                         client.BaseAddress = new Uri(link + MainHeadID + "/1");
@@ -166,7 +162,7 @@ namespace MVC_Project.Repository
                 if (result.IsSuccessStatusCode)
                 {
                     data = result.Content.ReadAsStringAsync().Result;
-                    //   data = data.Replace(@"{""MenuResDto"":", @"");
+                    data = data.Replace(@"{""MenuResDto"":", @"");
                     //  data = data.Replace(@"}]}", @"}]");
                     data = data.Replace("\"\"", "");
                     data = data.Replace("\'", "");

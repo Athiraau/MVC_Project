@@ -26,6 +26,41 @@ namespace MVC_Project.Controllers
             rootfolder = _configuration.GetValue<string>("BasValues:root");
         }
 
+        public IActionResult Dashboard(string session)
+        {
+            string decryptedData = " ";
+
+            if (string.IsNullOrEmpty(session))
+            {
+                session = HttpContext.Session.GetString("SessionVal");
+            }
+
+
+            String[] resession = session.ToString().Split("&");
+            session = resession[0];
+            string result1 = _repo.FromHexToBase64(session);
+            var strHeader = _repo.DecryptStringAES(result1);
+
+
+            String[] arrStr;
+            String[] arrStrCode;
+
+            arrStr = strHeader.ToString().Split("|");
+            arrStrCode = arrStr[2].ToString().Split("!");
+
+            ViewData["baseurl"] = baseurl;
+            HttpContext.Session.SetString("EmpName", arrStr[3]);
+            HttpContext.Session.SetString("ecode", arrStr[2]);
+            HttpContext.Session.SetString("BrName", arrStr[1]);
+            HttpContext.Session.SetString("UserId", arrStrCode[0]);
+            HttpContext.Session.SetString("SessionVal", session);
+            HttpContext.Session.SetString("BrID", arrStr[0]);
+            // HttpContext.Session.SetString("headname", "OTHERS");
+
+
+
+            return View();
+        }
 
         public IActionResult Index()
         {
@@ -48,5 +83,8 @@ namespace MVC_Project.Controllers
             return View();
 
         }
+   
+    
+    
     }
 }

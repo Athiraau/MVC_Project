@@ -1,4 +1,5 @@
-﻿
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
 @{
     ViewData["Title"] = "SMAPRODUCT";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -93,7 +94,8 @@
                             <span id="date" style="font-size:10px; font-weight:bold;"></span>
                         </th>
                         <th class="text-center fs-10" colspan="21">
-                            BRANCH NAME : A.O.VALAPAD -- BRANCH ID : 0
+                                <label style="font-size:x-small">BRANCH NAME : @httpContextAccessor.HttpContext.Session.GetString("BrName")</label><label style="font-size:x-small">BRANCH ID : @httpContextAccessor.HttpContext.Session.GetString("BrID")</label>
+
 
                         </th>
 

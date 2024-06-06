@@ -82,7 +82,7 @@ namespace MVC_Project.Controllers
         }
         public string getAPIData(string datas)
         {
-            string[] DataArray = datas.Split('~');
+            string[] DataArray = datas.Split('^');
 
 
             string flag = DataArray[0];

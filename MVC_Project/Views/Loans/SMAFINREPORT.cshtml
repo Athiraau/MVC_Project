@@ -1,4 +1,6 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+@{
     ViewData["Title"] = "SMAFINREPORT";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -71,7 +73,9 @@
                         </th>
                     </tr>
                     <tr>
-                        <th colspan="100%" style="font-weight:500">BRANCH NAME : A.O.VALAPAD -- BRANCH ID:0 </th>
+                        <th colspan="100%" style="font-weight:500">
+                        <label style="font-size:x-small">BRANCH NAME : @httpContextAccessor.HttpContext.Session.GetString("BrName")</label><label style="font-size:x-small"> --- BRANCH ID : @httpContextAccessor.HttpContext.Session.GetString("BrID")</label>
+                        </th>
                     </tr>
 
 
@@ -211,14 +215,18 @@
 
             function callAPIResponse() {
 
-                debugger;
+                var _link = '';
+                if (document.location.hostname == 'localhost') { _link = "/Loans/getAPIData"; }
+                else { var root = '@ViewData["root"]'; _link = "/" + root + "/Loans/getAPIData"; }
+
+
                const dt= fetchDate();
                 var dataz;
                 indata = "SMACLASSFINRPT"+"~"+dt;
                 var response = '';
                 $.ajax({
                     type: "GET",
-                    url: "/Loans/getAPIData",
+                    url: _link,
                     data: { datas: indata },
                     async: false,
                     success: function (response) {
@@ -243,21 +251,15 @@
             }
 
             function fetchData() {
-                alert("fetch");
             var baselink = '@ViewData["baseurl"]';
                callAPIResponse();
-            //    //const apiUrl = baselink + 'smareportsapi/api/SMAModule/GetSMAData/SMACLASSFINRPT/' + formattedDate + '/1';
-            //    const indata = formattedDate;
-            //       const data = callAPIResponse(indata);
-            //   const   data3 = JSON.parse(data.replace(/&quot;/g, '"'));
-            // populateTable(data3)                   
-             
+              
             }
 
 
             // Function to create and populate table with data
             function populateTable(data) {
-                debugger;
+                 
                 // Get reference to the table body
                 const tableBody = document.getElementById('table-body');
 
@@ -421,27 +423,6 @@
                     total_total += cellvalue23;
                     total_totalpercentage += cellvalue24;
 
-
-
-
-
-
-
-
-
-
-
-
-
-                    // total_nonnpaconscount += cellvalue20;
-                    // total_nonnpaconsbalance += cellvalue21;
-                    // total_totalnonnpa += cellvalue22;
-                    // total_total += cellvalue23;
-                    // total_totalpercentage += cellvalue24;
-
-
-                    // alert(total_nodueamount);
-
                     cell10.style.backgroundColor = 'greenyellow';
                     cell11.style.backgroundColor = 'greenyellow';
                     cell12.style.backgroundColor = 'yellow';
@@ -453,10 +434,6 @@
                     cell18.style.backgroundColor = 'red';
 
 
-                    // summ();
-                    // Replace 'name' with actual property name
-                    // Replace 'email' with actual property name
-                    // Add more properties if needed
                 });
 
             

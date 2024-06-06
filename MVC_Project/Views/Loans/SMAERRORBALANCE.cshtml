@@ -201,12 +201,16 @@
     <script>
 
         function callAPIResponse(indata) {
-            debugger;
+            var _link = '';
+            if (document.location.hostname == 'localhost') { _link = "/Loans/getAPIData"; }
+            else { var root = '@ViewData["root"]'; _link = "/" + root + "/Loans/getAPIData"; }
+
             var dataz;
             var response = '';
             $.ajax({
                 type: "GET",
-                url: "/Loans/getAPIData",
+              //  url: "/Loans/getAPIData",
+              url: _link,
                 data: { datas: indata },
                 async: false,
                 success: function (response) {
@@ -218,12 +222,16 @@
         }
 
         function callAPIResponse1(indata) {
-            debugger;
+            var _link = '';
+            if (document.location.hostname == 'localhost') { _link = "/Loans/getAPIData"; }
+            else { var root = '@ViewData["root"]'; _link = "/" + root + "/Loans/getAPIData"; }
+
+
             var dataz;
             var response = '';
             $.ajax({
                 type: "GET",
-                url: "/Loans/getAPIData",
+                url: _link,
                 data: { datas: indata },
                 async: false,
                 success: function (response) {

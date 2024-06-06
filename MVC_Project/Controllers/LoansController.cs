@@ -89,7 +89,6 @@ namespace MVC_Project.Controllers
             var UserId = HttpContext.Session.GetString("UserId");
 
             HttpContext.Session.SetString("headname", datas);
-           // datas = "AAAA";
 
             MenuListModel model = new MenuListModel();
             model = (MenuListModel)_Grepo.GetMainMenuData(UserId, baseurl, MainHeadID);

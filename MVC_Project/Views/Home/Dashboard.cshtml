@@ -12,7 +12,7 @@
     <title> MEBS Dashboard</title>
     <link rel="stylesheet" href="~/css/site.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js" integrity="sha256-/H4YS+7aYb9kJ5OKhFYPUjSJdrtV6AeyJOtTkw6X72o=" crossorigin="anonymous"></script>
-  
+
     <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -20,11 +20,11 @@
     <link rel="text/javascript" href="~/css/site.js">
     <section class="home-section">
 
-        <div class="home-content" >
-            <div class="overview-boxes" >
+        <div class="home-content">
+            <div class="overview-boxes">
                 <div class="box" id="LOANS" onclick="MenuPageLoader(id)" style="cursor:pointer;">
                     <div class="right-side">
-                        <div class="box-topic" >Loans</div>
+                        <div class="box-topic">Loans</div>
                         <div class="indicator">
                             <i class='bx bxs-right-arrow-alt'></i>
                             <span class="text">Click Here To View</span>
@@ -81,7 +81,7 @@
                         </div>
                     </div>
                     <i class='bx bxs-user cart two'></i>
-                  @*  <i class='bx bx-cart-alt cart'></i>*@
+                    @*  <i class='bx bx-cart-alt cart'></i>*@
                 </div>
                 <div class="box">
                     <div class="right-side">
@@ -146,24 +146,24 @@
 
 
     </section>
-    
+
     <script>
-        
+
         function MenuPageLoader(pageID) {
-          
+
             var id = '@ViewData["empCode"]';
-         //   alert(pageID);
-           var code = encrypt(id);
+            //   alert(pageID);
+            var code = encrypt(id);
 
-        //    HttpContext.Session.SetString("headname", pageID);
+            //    HttpContext.Session.SetString("headname", pageID);
 
-           
+
             window.location.href = "../" + pageID + "/Index?datas=" + pageID;
-           
+
         }
 
-      
-       
+
+
         function updateDateTime() {
 
             var now = new Date();

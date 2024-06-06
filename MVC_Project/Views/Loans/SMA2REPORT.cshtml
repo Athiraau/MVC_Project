@@ -1,4 +1,6 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+@{
     ViewData["Title"] = "SMA2REPORT";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -133,7 +135,7 @@
 
                     <tr>
                         <th class="text-center fs-10" colspan="12">
-                            BRANCH NAME : A.O.VALAPAD -- BRANCH ID : 0
+                            <label style="font-size:x-small">BRANCH NAME : @httpContextAccessor.HttpContext.Session.GetString("BrName")</label><label style="font-size:x-small">BRANCH ID : @httpContextAccessor.HttpContext.Session.GetString("BrID")</label>
                         </th>
                     </tr>
 
@@ -175,17 +177,20 @@
         window.onload = function FetchFunction() {
             const indata = "1";
             callAPIResponse(indata);
-         //   fetchData();
         }
 
         function callAPIResponse(indata) {
-            debugger;
+            var _link = '';
+            if (document.location.hostname == 'localhost') { _link = "/Loans/getAPIData"; }
+            else { var root = '@ViewData["root"]'; _link = "/" + root + "/Loans/getAPIData"; }
+
             var dataz;
             indata = "sma2report~1";
             var response = '';
             $.ajax({
                 type: "GET",
-                url: "/Loans/getAPIData",
+                url:_link,
+            //    url: "/Loans/getAPIData",
                 data: { datas: indata },
                 async: false,
                 success: function (response) {
@@ -195,17 +200,7 @@
                 }
             });
         }
-        // Function to fetch data from API
-        //function fetchData() {
-          
-                  
-        //const indata ="1";
-        //callAPIResponse(indata);
-                       
-        ////    const data33 = JSON.parse(data.replace(/&quot;/g, '"'));
-        ////    populateTable(data33);
-   
-        //}
+       
 
         function populateTable(data33) {
 

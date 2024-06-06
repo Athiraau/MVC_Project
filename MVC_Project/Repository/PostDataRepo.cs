@@ -71,11 +71,43 @@ namespace MVC_Project.Repository
 
             return data;
         }
-    }
-           
-       
-            
+
+        public async Task<dynamic> UploadDocument(string query, string code, string baseurl)
+        {
+            string data = "";
+            using (HttpClient client = new HttpClient())
+            {
+
+                string content = JsonConvert.SerializeObject(new { p_query = query, docData = code });
+                var buffer = Encoding.UTF8.GetBytes(content);
+                var byteContent = new ByteArrayContent(buffer);
+                byteContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+
+
+                string url2 = baseurl + "smareportsapi/api/SMAModule/DocumentUpload";
+                HttpResponseMessage response2 = await client.PostAsync(url2, byteContent);
+                if (response2.IsSuccessStatusCode)
+                {
+                    data = response2.Content.ReadAsStringAsync().Result;
+                    data = data.Replace("\"\"", "");
+                    data = data.Replace("\'", "");
+                   // data = data.Replace(@"""RESP"":", @"");
+
+                }
+
+
+            }
+
+            data = RemoveSpecialCharacters(data);
+
+            return data;
+
         }
+
+
+
+    }
+}
 
 
 
